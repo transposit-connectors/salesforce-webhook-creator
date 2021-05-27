@@ -15,11 +15,13 @@
     },
     "FORCE_CONSUMER_KEY": {
       "description": "The Salesforce OAuth Consumer Key",
-      "required": true
+      "required": true,
+      "value": "3MVG9Kip4IKAZQEX55FB9cIAX2GzfFwUU4OuZLTpVU1SEdwfV7q4WincKSGdZ2zABPx_aMbf0Q0qzJLrqaDNT"
     },
     "FORCE_CONSUMER_SECRET": {
       "description": "The Salesforce OAuth Consumer Secret",
-      "required": true
+      "required": true,
+      "value": "6462FE24A3749F85EE3DD79AC58F8D509B95F47AA3C1EFC28B4C4C57238195CA"
     }
   }
 }
