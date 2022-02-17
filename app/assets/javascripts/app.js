@@ -1,49 +1,51 @@
-require(["angular"], function(angular) {
-
-  angular.module('myApp', []).
-    controller('WebhooksController', function($scope, $http) {
-
-      var fetchWebhooks = function() {
-        $http.get('/webhooks').
-          success(function(data) {
+require(["angular"], function (angular) {
+  angular
+    .module("myApp", [])
+    .controller("WebhooksController", function ($scope, $http) {
+      var fetchWebhooks = function () {
+        $http
+          .get("/webhooks")
+          .success(function (data) {
             $scope.webhooks = data;
-          }).
-          error(function(data) {
+          })
+          .error(function (data) {
             $scope.errorMessage = data.error.message;
           });
       };
 
-      var createWebhook = function(name, sobject, events, url, csrfToken) {
+      var createWebhook = function (name, sobject, events, url, csrfToken) {
         var data = {
           name: name,
           sobject: sobject,
           events: events,
           url: url,
-          csrfToken: csrfToken
+          csrfToken: csrfToken,
         };
 
-        $http.post('/webhooks?csrfToken=' + csrfToken, data).
-          success(function() {
+        $http
+          .post("/webhooks?csrfToken=" + csrfToken, data)
+          .success(function () {
             initForm();
             fetchWebhooks();
-          }).
-          error(function(data) {
+          })
+          .error(function (data) {
             $scope.working = false;
             $scope.errorMessage = data.error.message;
           });
       };
 
-      var fetchSobjects = function() {
-        $http.get('/sobjects').
-          success(function(data) {
+      var fetchSobjects = function () {
+        $http
+          .get("/sobjects")
+          .success(function (data) {
             $scope.sobjects = data;
-          }).
-          error(function(data) {
+          })
+          .error(function (data) {
             $scope.errorMessage = data.error.message;
           });
       };
 
-      var initForm = function() {
+      var initForm = function () {
         if ($scope.errorMessage === undefined) {
           $scope.errorMessage = "";
         }
@@ -55,10 +57,10 @@ require(["angular"], function(angular) {
         $scope.url = "";
       };
 
-      var selectedEvents = function() {
+      var selectedEvents = function () {
         var selectedEvents = [];
         for (var event in $scope.events) {
-          if($scope.events.hasOwnProperty(event)) {
+          if ($scope.events.hasOwnProperty(event)) {
             if ($scope.events[event]) {
               selectedEvents.push(event);
             }
@@ -71,13 +73,23 @@ require(["angular"], function(angular) {
       fetchSobjects();
       initForm();
 
-      $scope.createWebhook = function() {
-        if ($scope.webhookForm.name.$valid && $scope.webhookForm.sobject.$valid && selectedEvents().length > 0 && $scope.webhookForm.url.$valid) {
+      $scope.createWebhook = function () {
+        if (
+          $scope.webhookForm.name.$valid &&
+          $scope.webhookForm.sobject.$valid &&
+          selectedEvents().length > 0 &&
+          $scope.webhookForm.url.$valid
+        ) {
           $scope.errorMessage = "";
           $scope.working = true;
-          createWebhook($scope.name, $scope.sobject, selectedEvents(), $scope.url, $scope.csrfToken);
-        }
-        else {
+          createWebhook(
+            $scope.name,
+            $scope.sobject,
+            selectedEvents(),
+            $scope.url,
+            $scope.csrfToken
+          );
+        } else {
           var error = "";
           if ($scope.webhookForm.name.$invalid) {
             error += "Name must contain only letters.  ";
@@ -95,5 +107,4 @@ require(["angular"], function(angular) {
         }
       };
     });
-
 });
